@@ -29,4 +29,12 @@ if login(user, password):
         '''
     )
 
-
+''' Sugiere profe
+def es_entero(var_str):
+    try:
+        var_int = int(var_str)
+        res = True
+    except:
+        res = False
+    return res
+'''
