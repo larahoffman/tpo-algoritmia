@@ -25,28 +25,96 @@ medios_pago_pasajes = [2, 1, 3, 2, 1, 3, 2, 1, 3, 2]  # 1 efectivo, 2 tarjeta, 3
 
 def login(usuario, contrasenia):
     acceso = False
-    while usuario != usuario_admin or contrasenia != contrasenia_admin:
+    intentos = 0
+    while (usuario != usuario_admin or contrasenia != contrasenia_admin) and intentos < 3:
         print("Error! Usuario o contraseña incorrectos. Intente nuevamente.")
         usuario = input("Ingrese su usuario: ")
         contrasenia = input("Ingrese su contraseña: ")
-    acceso = True
+        intentos += 1
+    if intentos > 3:
+        print("Demasiados intentos fallidos. Saliendo del sistema.")
+        return acceso
+    else:
+        acceso = True
     return acceso
+
+#def buscar_codigo(lista, )
+
+def agregar_cliente():
+    print("--------------- Agregar un Cliente Nuevo ---------------")
+     
+    
+def modificar_cliente():
+    print("------------------- Modificar Cliente ------------------")
+    cliente_a_modificar = int(input("Ingrese el codigo del cliente a modificar: "))
+    pass
+
+
+# def eliminar_cliente():
+#     print("------------------- Eliminar Cliente ------------------")
+#     cliente_a_eliminar = int(input("Ingrese el código del cliente a eliminar: "))
+#     pos = buscar_cliente(cliente_a_eliminar, codigo)
+
+#LOGIN    
+
 print("--------------- Sistema de Venta de Pasajes ---------------")
 print("--------------------- Inicio de sesión --------------------")
 
 user = input("Ingrese su usuario: ")
 password = input("Ingrese su contraseña: ")
 
+#MENÚ
 if login(user, password):
     print("--------------- Sistema de Venta de Pasajes ---------------")
     print("Bienvenido,", usuario_admin)
     print('''
-    ----------------------
-    |    Menú principal  |
-    |    1. Clientes     |
-    |    2. Destinos     |
-    |    3. Pasajes      |
-    ----------------------
+    ---------------------------------
+    |    Menú principal             |
+    |    1. Gestión de clientes     |
+    |    2. Gestión de destinos     |
+    |    3. Gestión de pasajes      |
+    |    4. Salir                   |
+    ---------------------------------
         '''
     )
+    opcion_menu = int(input("Seleccione una opción: "))
+    if opcion_menu == 1:
+        print('''
+        -------------------------------------
+        |    Gestión de clientes            |
+        |    1. Agregar cliente             |
+        |    2. Eliminar cliente            |
+        |    3. Modificar datos cliente     |
+        |    4. Ver listado clientes        |
+        |    5. Volver al menú principal    |
+        -------------------------------------
+        '''
+        )
+        opcion_menu_clientes= int(input("Seleccione una opción: "))
 
+        if opcion_menu_clientes == 1:
+            # funcion alta
+            agregar_cliente()
+            pass
+        elif opcion_menu_clientes == 2:
+            # funcion baja
+            pass
+        elif opcion_menu_clientes == 3:
+            # funcion update
+            modificar_cliente()
+            pass
+        elif opcion_menu_clientes == 4:
+            # Funcion listado
+            pass
+        else:
+            pass
+        
+
+
+
+
+        
+    
+
+
+ 
