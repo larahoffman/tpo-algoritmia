@@ -1,4 +1,6 @@
 # Sistema de Venta de Pasajes
+ 
+
 
 # Datos
 usuario_admin = "admin"
@@ -19,6 +21,90 @@ codigos_pasajes = [301, 302, 303, 304, 305, 306, 307, 308, 309, 310]
 codigos_cliente_pasajes = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110]
 codigos_destino_pasajes = [201, 202, 203, 204, 205, 206, 207, 208, 209, 210]
 cantidades_pasajes = [2, 1, 3, 2, 1, 4, 2, 1, 2, 3]
+medios_pago_pasajes = [2, 1, 3, 2, 1, 3, 2, 1, 3, 2]  # 1 efectivo, 2 tarjeta, 3 transferencia
+
+#ORDENAR LISTAS
+
+#CLIENTES--> selección
+def ordenar_clientes_codigo():
+
+    for i in range(len(codigos_clientes)-1):
+
+        pos_menor = i
+
+        for j in range(i+1, len(codigos_clientes)):
+
+            if codigos_clientes[j] < codigos_clientes[pos_menor]:
+
+                pos_menor = j
+
+        codigos_clientes[i], codigos_clientes[pos_menor] = codigos_clientes[pos_menor], codigos_clientes[i]
+
+        nombres_clientes[i], nombres_clientes[pos_menor] = nombres_clientes[pos_menor], nombres_clientes[i]
+
+        edades_clientes[i], edades_clientes[pos_menor] = edades_clientes[pos_menor], edades_clientes[i]
+
+        tipos_clientes[i], tipos_clientes[pos_menor] = tipos_clientes[pos_menor], tipos_clientes[i]
+    
+
+    print("Clientes ordenados por código.")
+
+
+
+#DESTINOS--> Burbujeo
+def ordenar_destinos_distancia():
+
+    for i in range(len(distancias_destinos)-1):
+
+        for j in range(len(distancias_destinos)-1-i):
+
+            if distancias_destinos[j] > distancias_destinos[j+1]:
+
+                distancias_destinos[j], distancias_destinos[j+1] = distancias_destinos[j+1], distancias_destinos[j]
+
+                codigos_destinos[j], codigos_destinos[j+1] = codigos_destinos[j+1], codigos_destinos[j]
+
+                nombres_destinos[j], nombres_destinos[j+1] = nombres_destinos[j+1], nombres_destinos[j]
+
+                precios_destinos[j], precios_destinos[j+1] = precios_destinos[j+1], precios_destinos[j]
+
+    print("Destinos ordenados por distancia.")
+
+
+#PASAJES--> Insercion
+def ordenar_pasajes_cantidad():
+
+    for i in range(1, len(cantidades_pasajes)):
+
+        cantidad_aux = cantidades_pasajes[i]
+        codigo_aux = codigos_pasajes[i]
+        cliente_aux = codigos_cliente_pasajes[i]
+        destino_aux = codigos_destino_pasajes[i]
+        pago_aux = medios_pago_pasajes[i]
+
+        j = i - 1
+
+        while j >= 0 and cantidades_pasajes[j] > cantidad_aux:
+
+            cantidades_pasajes[j+1] = cantidades_pasajes[j]
+            codigos_pasajes[j+1] = codigos_pasajes[j]
+            codigos_cliente_pasajes[j+1] = codigos_cliente_pasajes[j]
+            codigos_destino_pasajes[j+1] = codigos_destino_pasajes[j]
+            medios_pago_pasajes[j+1] = medios_pago_pasajes[j]
+
+            j -= 1
+
+        cantidades_pasajes[j+1] = cantidad_aux
+        codigos_pasajes[j+1] = codigo_aux
+        codigos_cliente_pasajes[j+1] = cliente_aux
+        codigos_destino_pasajes[j+1] = destino_aux
+        medios_pago_pasajes[j+1] = pago_aux
+
+    print("Pasajes ordenados por cantidad.")
+
+
+
+
 medios_pago_pasajes = [2, 1, 3, 2, 1, 3, 2, 1, 3, 2]  # 1 esfectivo, 2 tarjeta, 3 transferencia
 
 
