@@ -191,76 +191,171 @@ def ordenar_pasajes_cantidad():
 # Funciones
 
 def menu_principal():
-    print('''
-    ---------------------------------
-    |    Menú principal             |
-    |    1. Gestión de clientes     |
-    |    2. Gestión de destinos     |
-    |    3. Gestión de pasajes      |
-    |    4. Búsqueda                |
-    |    5. Estadística             |
-    |    6. Salir                   |
-    ---------------------------------
-    ''')
+    opcion_menu = 0
+    while opcion_menu != 6:
+        print('''
+        ---------------------------------
+        |    Menú principal             |
+        |    1. Gestión de clientes     |
+        |    2. Gestión de destinos     |
+        |    3. Gestión de pasajes      |
+        |    4. Búsqueda                |
+        |    5. Estadística             |
+        |    6. Salir                   |
+        ---------------------------------
+        ''')
+        opcion_menu = pedir_entero("Seleccione una opción: ", 1, 6)
+        if opcion_menu == 1:
+            menu_clientes()
+        elif opcion_menu == 2:
+            menu_destinos()
+        elif opcion_menu == 3:
+            menu_pasajes()
+        elif opcion_menu == 4:
+            menu_busquedas()
+        elif opcion_menu == 5:
+            menu_estadisticas()
+        elif opcion_menu == 6:
+            print("\nGracias por utilizar el sistema.")
+            print("Cerrando programa...")
+            print("Programa finalizado.")
 
 def menu_clientes():
-    print('''
-    -------------------------------------
-    |    Gestión de clientes            |
-    |    1. Agregar cliente             |
-    |    2. Eliminar cliente            |
-    |    3. Modificar datos cliente     |
-    |    4. Ver listado clientes        |
-    |    5. Volver al menú principal    |
-    -------------------------------------
-    ''')
+    opcion_menu_clientes = 0
+    while opcion_menu_clientes != 5:
+        print('''
+        -------------------------------------
+        |    Gestión de clientes            |
+        |    1. Agregar cliente             |
+        |    2. Eliminar cliente            |
+        |    3. Modificar datos cliente     |
+        |    4. Ver listado clientes        |
+        |    5. Volver al menú principal    |
+        -------------------------------------
+        ''')
+        opcion_menu_clientes= pedir_entero("Seleccione una opción: ", 1, 5)
+        if opcion_menu_clientes == 1:
+            agregar_cliente()
+        elif opcion_menu_clientes == 2:
+            eliminar_cliente()
+        elif opcion_menu_clientes == 3:
+            modificar_cliente()    
+        elif opcion_menu_clientes == 4:
+            listar_clientes()
+        elif opcion_menu_clientes == 5:
+            print("Volviendo al menú principal...")
 
 def menu_destinos():
-    print('''
-    -------------------------------------
-    |    Gestión de destinos            |
-    |    1. Agregar destino             |
-    |    2. Eliminar destino            |
-    |    3. Modificar datos destino     |
-    |    4. Ver listado destinos        |
-    |    5. Volver al menú principal    |
-    -------------------------------------
-    ''' )
+    opcion_destinos = 0
+
+    while opcion_destinos != 5:
+        print('''
+        -------------------------------------
+        |    Gestión de destinos            |
+        |    1. Agregar destino             |
+        |    2. Eliminar destino            |
+        |    3. Modificar datos destino     |
+        |    4. Ver listado destinos        |
+        |    5. Volver al menú principal    |
+        -------------------------------------
+        ''' )
+
+        opcion_destinos = pedir_entero(input("Seleccione una opción: "), 1, 5)
+
+        if opcion_destinos == 1:
+            agregar_destino()
+        elif opcion_destinos == 2:
+            eliminar_destino()
+        elif opcion_destinos == 3:
+            modificar_destino()
+        elif opcion_destinos == 4:
+            listar_destinos()
+        elif opcion_destinos == 5:
+            print("Volviendo al menú principal...")
 
 def menu_pasajes():
-    print('''
-    -------------------------------------
-    |      Gestión de Pasajes           |
-    | 1. Agregar pasaje                 |
-    | 2. Eliminar pasaje                |
-    | 3. Modificar pasaje               |
-    | 4. Listar pasajes                 |
-    | 5. Volver al menú principal       |
-    -------------------------------------
-    ''')
+    opcion_pasajes = 0
+
+    while opcion_pasajes != 5:
+
+        print('''
+        -------------------------------------
+        |      Gestión de Pasajes           |
+        | 1. Agregar pasaje                 |
+        | 2. Eliminar pasaje                |
+        | 3. Modificar pasaje               |
+        | 4. Listar pasajes                 |
+        | 5. Volver al menú principal       |
+        -------------------------------------
+        ''')
+
+        opcion_pasajes = pedir_entero(input("Seleccione una opción: "), 1, 5)
+
+        if opcion_pasajes == 1:
+            agregar_pasaje()
+        elif opcion_pasajes == 2:
+            eliminar_pasaje()
+        elif opcion_pasajes == 3:
+            modificar_pasaje()
+        elif opcion_pasajes == 4:
+            listar_pasajes()
+        elif opcion_pasajes == 5:
+            print("Volviendo al menú principal...")
 
 def menu_busquedas():
-    print('''
-    -------------------------------------
-    |           Búsquedas               |
-    | 1. Buscar cliente                 |
-    | 2. Buscar destino                 |
-    | 3. Buscar pasaje                  |
-    | 4. Volver al menú principal       |
-    -------------------------------------
-    ''')
+    opcion_busquedas = 0
 
-def menu_estadisticas():   
-   print('''
-    ------------------------------------------
-    |           Estadísticas                 |
-    | 1. Pasajes por destino y medio de pago |
-    | 2. Pasajes por tipo de cliente         |
-    | 3. Pasajes por destino                 |
-    | 4. Pasajes por medio de pago           |
-    | 5. Volver al menú principal            |
-    ------------------------------------------
-    ''')
+    while opcion_busquedas != 4:
+        print('''
+        -------------------------------------
+        |           Búsquedas               |
+        | 1. Buscar cliente                 |
+        | 2. Buscar destino                 |
+        | 3. Buscar pasaje                  |
+        | 4. Volver al menú principal       |
+        -------------------------------------
+        ''')
+
+        opcion_busquedas = pedir_entero(input("Seleccione una opción: "), 1, 4)
+
+        if opcion_busquedas == 1:
+            buscar_cliente_menu()
+        elif opcion_busquedas == 2:
+            buscar_destino_menu()
+        elif opcion_busquedas == 3:
+            buscar_pasaje_menu()
+        elif opcion_busquedas == 4:
+            print("Volviendo al menú principal...")
+
+def menu_estadisticas():
+    opcion_estadisticas = 0
+
+    while opcion_estadisticas != 5:
+
+        print('''
+        ------------------------------------------
+        |           Estadísticas                 |
+        | 1. Pasajes por destino y medio de pago |
+        | 2. Pasajes por tipo de cliente         |
+        | 3. Pasajes por destino                 |
+        | 4. Pasajes por medio de pago           |
+        | 5. Volver al menú principal            |
+        ------------------------------------------
+        ''')
+
+        opcion_estadisticas = pedir_entero(input("Seleccione una opción: "), 1, 5)
+
+        if opcion_estadisticas == 1:
+            estadistica_destino_pago()  
+        elif opcion_estadisticas == 2: 
+            estadistica_tipo_cliente()        
+        elif opcion_estadisticas == 3:
+            estadistica_pasaje_destino()        
+        elif opcion_estadisticas == 4:
+            estadistica_medio_pago()
+        elif opcion_estadisticas == 5:
+            print("Volviendo al menú principal...") 
+
 
 def login(usuario, contrasenia):
     acceso = False
@@ -277,29 +372,19 @@ def login(usuario, contrasenia):
         acceso = True
     return acceso
 
+def pedir_entero(mensaje, minimo, maximo):
+    numero = int(input(mensaje))
+    while numero < minimo or numero > maximo:
+        print("Error. Ingrese un numero entre", minimo, "y", maximo)
+        numero = int(input(mensaje))
+    return numero
+
+
 def pedir_entero_minimo(mensaje, minimo):
-
-    dato = input(mensaje)
-
-    # Validar que sea un número entero
-    while not es_entero(dato):
-        print("ERROR! Debe ingresar un número entero.")
-        dato = input(mensaje)
-
-    numero = int(dato)
-
-    # Validar que sea mayor o igual al mínimo
+    numero = int(input(mensaje))
     while numero < minimo:
-        print("ERROR! Debe ingresar un número mayor o igual a", minimo)
-
-        dato = input(mensaje)
-
-        while not es_entero(dato):
-            print("ERROR! Debe ingresar un número entero.")
-            dato = input(mensaje)
-
-        numero = int(dato)
-
+        print("Error. Ingrese un numero mayor o igual a", minimo)
+        numero = int(input(mensaje))
     return numero
 
 # Busca si existe el codigo en la lista y en caso de que si, devuelve la posicion 
@@ -1074,145 +1159,5 @@ password = input("Ingrese su contraseña: ")
 if login(user, password):
     print("--------------- Sistema de Venta de Pasajes ---------------")
     print("Bienvenido,", usuario_admin)
-    opcion_menu = 0
-    opcion_menu_clientes = 0
+
     menu_principal()
-    opcion_menu = pedir_entero_minimo("Seleccione una opción: ", 1)
-    while opcion_menu != 6:
-        if opcion_menu == 1:
-            menu_clientes()
-            opcion_menu_clientes= pedir_entero_minimo("Seleccione una opción: ", 1)
-            while opcion_menu_clientes != 5:
-                if opcion_menu_clientes == 1:
-                    agregar_cliente()
-                    menu_clientes()
-                elif opcion_menu_clientes == 2:
-                    eliminar_cliente()
-                    menu_clientes()
-                elif opcion_menu_clientes == 3:
-                    modificar_cliente()
-                    menu_clientes()    
-                elif opcion_menu_clientes == 4:
-                    listar_clientes()
-                    menu_clientes()
-                else:
-                    print("Opción inválida")
-                    menu_clientes()
-                    opcion_menu_clientes= pedir_entero_minimo(input("Seleccione una opción: ",1))
-                opcion_menu_clientes= pedir_entero_minimo(input("Seleccione una opción: "),1)
-            menu_principal()
-            # aca falta volver a llamar al menu
-                
-        # DESTINOS
-        elif opcion_menu == 2:
-
-            opcion_destinos = 0
-
-            while opcion_destinos != 5:
-
-                menu_destinos()
-
-                opcion_destinos = int(input("Seleccione una opción: "))
-
-                if opcion_destinos == 1:
-                    agregar_destino()
-
-                elif opcion_destinos == 2:
-                    eliminar_destino()
-
-                elif opcion_destinos == 3:
-                    modificar_destino()
-
-                elif opcion_destinos == 4:
-                    listar_destinos()
-                
-                else:
-                        print ("Opción inválida")
-                        opcion_menu_clientes= int(input("Seleccione una opción: "))
-                
-
-        # PASAJES
-        elif opcion_menu == 3:
-
-            opcion_pasajes = 0
-
-            while opcion_pasajes != 5:
-
-                menu_pasajes()
-
-                opcion_pasajes = int(input("Seleccione una opción: "))
-
-                if opcion_pasajes == 1:
-                    agregar_pasaje()
-
-                elif opcion_pasajes == 2:
-                    eliminar_pasaje()
-
-                elif opcion_pasajes == 3:
-                    modificar_pasaje()
-
-                elif opcion_pasajes == 4:
-                    listar_pasajes()
-        
-                else:
-                    print ("Opción inválida")
-                    opcion_menu_clientes= int(input("Seleccione una opción: "))
-
-        # BUSQUEDAS
-        elif opcion_menu == 4:
-
-            opcion_busquedas = 0
-
-            while opcion_busquedas != 4:
-
-                menu_busquedas()
-
-                opcion_busquedas = int(input("Seleccione una opción: "))
-
-                if opcion_busquedas == 1:
-                    buscar_cliente_menu()
-
-                elif opcion_busquedas == 2:
-                    buscar_destino_menu()
-
-                elif opcion_busquedas == 3:
-                    buscar_pasaje_menu()
-
-                else:
-                    print ("Opción inválida")
-                    opcion_menu_clientes= int(input("Seleccione una opción: "))
-
-
-        # ESTADISTICAS
-        elif opcion_menu == 5:
-            opcion_estadisticas = 0
-
-            while opcion_estadisticas != 2:
-
-                menu_estadisticas()
-
-                opcion_estadisticas = int(input("Seleccione una opción: "))
-
-                if opcion_estadisticas == 1:
-                        estadistica_destino_pago()
-                
-                elif opcion_estadisticas == 2: 
-                        estadistica_tipo_cliente()
-                        
-                elif opcion_estadisticas == 3:
-                        estadistica_pasaje_destino()
-                        
-                elif opcion_estadisticas == 4:
-                        estadistica_medio_pago() 
-
-                else:
-                        print ("Opción inválida")
-                        opcion_menu_clientes= int(input("Seleccione una opción: "))
-            else:
-                print()
-                opcion_menu = pedir_entero_minimo(input("Seleccione una opción: "),1)
-            #SALIDA
-        if opcion_menu == 6:
-            print("\nGracias por utilizar el sistema.")
-            print("Cerrando programa...")
-            print("Programa finalizado.")
