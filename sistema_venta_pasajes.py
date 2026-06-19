@@ -21,6 +21,7 @@ codigos_destino_pasajes = [201, 202, 203, 204, 205, 206, 207, 208, 209, 210]
 cantidades_pasajes = [2, 1, 3, 2, 1, 4, 2, 1, 2, 3]
 medios_pago_pasajes = [2, 1, 3, 2, 1, 3, 2, 1, 3, 2]  # 1 esfectivo, 2 tarjeta, 3 transferencia
 
+
 #ORDENAR LISTAS
 
 #CLIENTES--> selección
@@ -102,18 +103,78 @@ def ordenar_pasajes_cantidad():
 
 
 # Funciones
-  
 
+def menu_principal():
+    print('''
+    ---------------------------------
+    |    Menú principal             |
+    |    1. Gestión de clientes     |
+    |    2. Gestión de destinos     |
+    |    3. Gestión de pasajes      |
+    |    4. Búsqueda                |
+    |    5. Estadística             |
+    |    6. Salir                   |
+    ---------------------------------
+    ''')
 
-     
-      
-       
-        
-         
-          
-           
-            
-             
+def menu_clientes():
+    print('''
+    -------------------------------------
+    |    Gestión de clientes            |
+    |    1. Agregar cliente             |
+    |    2. Eliminar cliente            |
+    |    3. Modificar datos cliente     |
+    |    4. Ver listado clientes        |
+    |    5. Volver al menú principal    |
+    -------------------------------------
+    ''')
+
+def menu_destinos():
+    print('''
+    -------------------------------------
+    |    Gestión de destinos            |
+    |    1. Agregar destino             |
+    |    2. Eliminar destino            |
+    |    3. Modificar datos destino     |
+    |    4. Ver listado destinos        |
+    |    5. Volver al menú principal    |
+    -------------------------------------
+    ''' )
+
+def menu_pasajes():
+    print('''
+    -------------------------------------
+    |      Gestión de Pasajes           |
+    | 1. Agregar pasaje                 |
+    | 2. Eliminar pasaje                |
+    | 3. Modificar pasaje               |
+    | 4. Listar pasajes                 |
+    | 5. Volver al menú principal       |
+    -------------------------------------
+    ''')
+
+def menu_busquedas():
+    print('''
+    -------------------------------------
+    |           Búsquedas               |
+    | 1. Buscar cliente                 |
+    | 2. Buscar destino                 |
+    | 3. Buscar pasaje                  |
+    | 4. Volver al menú principal       |
+    -------------------------------------
+    ''')
+
+def menu_estadisticas():   
+   print('''
+    ------------------------------------------
+    |           Estadísticas                 |
+    | 1. Pasajes por destino y medio de pago |
+    | 2. Pasajes por tipo de cliente         |
+    | 3. Pasajes por destino                 |
+    | 4. Pasajes por medio de pago           |
+    | 5. Volver al menú principal            |
+    ------------------------------------------
+    ''')
 
 def login(usuario, contrasenia):
     acceso = False
@@ -130,12 +191,29 @@ def login(usuario, contrasenia):
         acceso = True
     return acceso
 
-# Función para validar que el número ingresado sea un entero mayor o igual a un mínimo establecido
 def pedir_entero_minimo(mensaje, minimo):
-    numero = int(input(mensaje))
+
+    dato = input(mensaje)
+
+    # Validar que sea un número entero
+    while not es_entero(dato):
+        print("ERROR! Debe ingresar un número entero.")
+        dato = input(mensaje)
+
+    numero = int(dato)
+
+    # Validar que sea mayor o igual al mínimo
     while numero < minimo:
-        print("Error. Ingrese un numero mayor o igual a", minimo)
-        numero = int(input(mensaje))
+        print("ERROR! Debe ingresar un número mayor o igual a", minimo)
+
+        dato = input(mensaje)
+
+        while not es_entero(dato):
+            print("ERROR! Debe ingresar un número entero.")
+            dato = input(mensaje)
+
+        numero = int(dato)
+
     return numero
 
 # Busca si existe el codigo en la lista y en caso de que si, devuelve la posicion 
@@ -184,39 +262,31 @@ def es_entero(var_str):
         res = False
     return res
 
-def nombre_cliente_existente(nombre):
-    for i in range(len(nombres_clientes)):
-        if nombres_clientes[i].lower()==nombre.lower():
-            return True
-    return False
-
 
 
 def agregar_cliente():
     print("--------------- Agregar un Cliente Nuevo ---------------")
      
     codigo_cliente_nuevo=int(input("Ingrese el código del cliente que desea agregar: "))
-    while buscar_codigo(codigo_cliente_nuevo) !=-1:
+    while buscar_codigo(codigos_clientes, codigo_cliente_nuevo) !=-1:
         print ("ERROR! Ese código ya se encuentra registrado.")
-        codigo_cliente_nuevo=int(input("Ingrese otro código: "))
+        codigo_cliente_nuevo=es_entero(input("Ingrese otro código: "))
 
     nombre_cliente_nuevo= input("Ingrese el nombre del cliente: ")
     while nombre_cliente_nuevo=="":
-        print("ERROR! Nombre vacío o ya existente.")
+        print("ERROR! Nombre vacío.")
 
         nombre_cliente_nuevo=input("Ingrese otro nombre: ")
-
     edad_cliente_nuevo=int(input("Ingrese la edad del cliente: "))
-    while edad_cliente_nuevo <=0:
+    while edad_cliente_nuevo <=0 or edad_cliente_nuevo >200:
         print("ERROR! Edad inválida.")
-        edad_cliente_nuevo=int(input("Ingrese la edad del cliente: "))
+        edad_cliente_nuevo=es_entero(input("Ingrese la edad del cliente: "))
 
-    edad_cliente_nuevo=int(input("Ingrese la edad del cliente: "))
 
     tipo_cliente_nuevo=int(input("Ingrese tipo (1=Regular/2=Frecuente): "))
     while tipo_cliente_nuevo !=1 and tipo_cliente_nuevo !=2:
         print("ERROR! Debe ingresar 1 o 2.")
-        tipo_cliente_nuevo=int(input("Ingrese tipo (1=Regular/2=Frecuente): "))
+        tipo_cliente_nuevo=es_entero(input("Ingrese tipo (1=Regular/2=Frecuente): "))
 
     codigos_clientes.append(codigo_cliente_nuevo)
     nombres_clientes.append(nombre_cliente_nuevo)
@@ -227,38 +297,56 @@ def agregar_cliente():
 
 
 def modificar_cliente():
+
     print("------------------- Modificar Cliente ------------------")
-    cliente_a_modificar = es_entero(input("Ingrese el codigo del cliente a modificar: "))# primero validamos que sea un código de tipo válido (número)
-    existe_cliente = existe_codigo(codigos_clientes, cliente_a_modificar) # validamos que exista el cliente en nuestra lista
-    if existe_cliente:
-        posicion = buscar_codigo(codigos_clientes, cliente_a_modificar) # obtenemos la posicion del codigo de cliente existente
-        print("Cliente", codigos_clientes[posicion])
 
-        print("Nombre actual:", nombres_clientes[posicion])
-        nombre_nuevo = input("Nuevo nombre: ")
-        # Valida que no se ingrese un texto vacío
-        while nombre_nuevo == "":
-            print("ERROR! No puede ingresar un nombre vacío")
-            nombre_nuevo = input("Nuevo nombre: ")
-        nombres_clientes[posicion] = nombre_nuevo
+    codigo = pedir_entero_minimo(
+        "Ingrese el código del cliente a modificar: ", 1
+    )
 
-        print("Edad actual:", edades_clientes[posicion])
-        edad_nueva = es_entero(input("Nueva edad: "))
-        # Valida que se ingrese una edad positiva
-        while edad_nueva <= 0:
-            print("ERROR! Edad inválida")
-            edad_nueva = es_entero(input("Nueva edad: "))
-        edades_clientes[posicion] = edad_nueva
-        
-        print("Tipo de cliente:", tipos_clientes[posicion])
-        tipo_cliente_nuevo = es_entero(input("Nuevo tipo de cliente (1=Regular/2=Frecuente): "))
-        # Valida que se ingrese un tipo de cliente valido (1 o 2)
-        while tipo_cliente_nuevo != 1 or tipo_cliente_nuevo != 2:
-            print("ERROR! Debe ingresar 1 o 2.")
-            tipo_cliente_nuevo = es_entero(input("Nuevo tipo de cliente (1=Regular/2=Frecuente): "))
-        tipos_clientes[posicion] = tipo_cliente_nuevo
+    posicion = buscar_codigo(codigos_clientes, codigo)
+
+    if posicion == -1:
+        print("ERROR! No existe un cliente con ese código.")
+
     else:
-        print("No existe el cliente ingresado")
+        print("\nDatos actuales del cliente")
+        print("--------------------------------")
+        print("Código:", codigos_clientes[posicion])
+        print("Nombre:", nombres_clientes[posicion])
+        print("Edad:", edades_clientes[posicion])
+        print("Tipo:", tipos_clientes[posicion])
+        print("--------------------------------")
+
+        # Modificar nombre
+        nuevo_nombre = input("Ingrese el nuevo nombre: ")
+
+        while nuevo_nombre == "":
+            print("ERROR! El nombre no puede estar vacío.")
+            nuevo_nombre = input("Ingrese el nuevo nombre: ")
+
+        # Modificar edad
+        nueva_edad = pedir_entero_minimo(
+            "Ingrese la nueva edad: ", 1
+        )
+
+        # Modificar tipo de cliente
+        nuevo_tipo = pedir_entero_minimo(
+            "Ingrese el nuevo tipo (1=Regular / 2=Frecuente): ", 1
+        )
+
+        while nuevo_tipo != 1 and nuevo_tipo != 2:
+            print("ERROR! Debe ingresar 1 o 2.")
+            nuevo_tipo = pedir_entero_minimo(
+                "Ingrese el nuevo tipo (1=Regular / 2=Frecuente): ", 1
+            )
+
+        # Guardar modificaciones
+        nombres_clientes[posicion] = nuevo_nombre
+        edades_clientes[posicion] = nueva_edad
+        tipos_clientes[posicion] = nuevo_tipo
+
+        print("Cliente modificado correctamente.")
 
 
 def eliminar_cliente():
@@ -660,6 +748,7 @@ def listar_pasajes():
                             
 def buscar_cliente_menu():
     print("------------------- Buscar Cliente ------------------")
+    ordenar_clientes_codigo() #Para el funcionamiento del calculo binario
     codigo_a_buscar = int(input("Ingrese el código del cliente a buscar: "))
     posicion_cliente = calculo_binario_cliente(codigo_a_buscar)
 
@@ -697,7 +786,7 @@ def buscar_destino_menu():
     print("1. Buscar por código")
     print("2. Buscar por nombre")
     print("3. Volver al menú principal")
-    print("---------------------------------")
+    print("-----------------------------------")
     
     opcion_busqueda = int(input("Seleccione una opción de búsqueda: "))
 
@@ -706,7 +795,7 @@ def buscar_destino_menu():
         posicion_destino = buscar_codigo(codigos_destinos, codigo_a_buscar)
 
         if posicion_destino != -1:
-            mostrar_datos_destino(posicion)
+            mostrar_datos_destino(posicion_destino)
         else:
             print("No se encontró un destino con ese código.")
         
@@ -887,8 +976,6 @@ def listar_pasajes():
 
 
 
-
-
 #LOGIN    
 
 print("--------------- Sistema de Venta de Pasajes ---------------")
@@ -903,46 +990,31 @@ if login(user, password):
     print("Bienvenido,", usuario_admin)
     opcion_menu = 0
     opcion_menu_clientes = 0
-    print('''
-        ---------------------------------
-        |    Menú principal             |
-        |    1. Gestión de clientes     |
-        |    2. Gestión de destinos     |
-        |    3. Gestión de pasajes      |
-        |    4. Búsqueda                |
-        |    5. Estadística             |
-        |    6. Salir                   |
-        ---------------------------------
-            '''
-        )
-    opcion_menu = es_entero(input("Seleccione una opción: "))
+    menu_principal()
+    opcion_menu = pedir_entero_minimo("Seleccione una opción: ", 1)
     while opcion_menu != 6:
         if opcion_menu == 1:
-            print('''
-                -------------------------------------
-                |    Gestión de clientes            |
-                |    1. Agregar cliente             |
-                |    2. Eliminar cliente            |
-                |    3. Modificar datos cliente     |
-                |    4. Ver listado clientes        |
-                |    5. Volver al menú principal    |
-                -------------------------------------
-                '''
-                )
-
-            opcion_menu_clientes= es_entero(input("Seleccione una opción: "))
+            menu_clientes()
+            opcion_menu_clientes= pedir_entero_minimo("Seleccione una opción: ", 1)
             while opcion_menu_clientes != 5:
                 if opcion_menu_clientes == 1:
                     agregar_cliente()
+                    menu_clientes()
                 elif opcion_menu_clientes == 2:
                     eliminar_cliente()
+                    menu_clientes()
                 elif opcion_menu_clientes == 3:
-                    modificar_cliente()    
+                    modificar_cliente()
+                    menu_clientes()    
                 elif opcion_menu_clientes == 4:
                     listar_clientes()
+                    menu_clientes()
                 else:
                     print("Opción inválida")
-                    opcion_menu_clientes= es_entero(input("Seleccione una opción: "))
+                    menu_clientes()
+                    opcion_menu_clientes= pedir_entero_minimo(input("Seleccione una opción: ",1))
+                opcion_menu_clientes= pedir_entero_minimo(input("Seleccione una opción: "),1)
+            menu_principal()
             # aca falta volver a llamar al menu
                 
         # DESTINOS
@@ -952,16 +1024,7 @@ if login(user, password):
 
             while opcion_destinos != 5:
 
-                print('''
-                -------------------------------------
-                |      Gestión de Destinos          |
-                | 1. Agregar destino                |
-                | 2. Eliminar destino               |
-                | 3. Modificar destino              |
-                | 4. Listar destinos                |
-                | 5. Volver al menú principal       |
-                -------------------------------------
-                ''')
+                menu_destinos()
 
                 opcion_destinos = int(input("Seleccione una opción: "))
 
@@ -989,16 +1052,7 @@ if login(user, password):
 
             while opcion_pasajes != 5:
 
-                print('''
-                -------------------------------------
-                |      Gestión de Pasajes           |
-                | 1. Agregar pasaje                 |
-                | 2. Eliminar pasaje                |
-                | 3. Modificar pasaje               |
-                | 4. Listar pasajes                 |
-                | 5. Volver al menú principal       |
-                -------------------------------------
-                ''')
+                menu_pasajes()
 
                 opcion_pasajes = int(input("Seleccione una opción: "))
 
@@ -1025,15 +1079,7 @@ if login(user, password):
 
             while opcion_busquedas != 4:
 
-                print('''
-                -------------------------------------
-                |           Búsquedas               |
-                | 1. Buscar cliente                 |
-                | 2. Buscar destino                 |
-                | 3. Buscar pasaje                  |
-                | 4. Volver al menú principal       |
-                -------------------------------------
-                ''')
+                menu_busquedas()
 
                 opcion_busquedas = int(input("Seleccione una opción: "))
 
@@ -1057,34 +1103,28 @@ if login(user, password):
 
             while opcion_estadisticas != 2:
 
-                    print('''
-                    -----------------------------
-                    |      Estadísticas           |
-                    | 1. Ver estadística          |
-                    | 2. Volver al menú principal |
-                    -----------------------------
-                    ''')
+                menu_estadisticas()
 
-                    opcion_estadisticas = int(input("Seleccione una opción: "))
+                opcion_estadisticas = int(input("Seleccione una opción: "))
 
-                    if opcion_estadisticas == 1:
+                if opcion_estadisticas == 1:
                         estadistica_destino_pago()
                 
-                    elif opcion_estadisticas == 2: 
+                elif opcion_estadisticas == 2: 
                         estadistica_tipo_cliente()
                         
-                    elif opcion_estadisticas == 3:
+                elif opcion_estadisticas == 3:
                         estadistica_pasaje_destino()
                         
-                    elif opcion_estadisticas == 4:
+                elif opcion_estadisticas == 4:
                         estadistica_medio_pago() 
 
-                    else:
+                else:
                         print ("Opción inválida")
                         opcion_menu_clientes= int(input("Seleccione una opción: "))
             else:
                 print()
-                opcion_menu = es_entero(input("Seleccione una opción: "))
+                opcion_menu = pedir_entero_minimo(input("Seleccione una opción: "),1)
             #SALIDA
         if opcion_menu == 6:
             print("\nGracias por utilizar el sistema.")
