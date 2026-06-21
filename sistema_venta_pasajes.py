@@ -809,41 +809,19 @@ def calculo_binario_cliente(codigo_a_buscar):
     
 def buscar_destino_menu():
     print("------------------- Buscar Destino ------------------")
-    print("1. Buscar por código")
-    print("2. Buscar por nombre")
-    print("3. Volver al menú principal")
-    print("-----------------------------------")
-    
-    opcion_busqueda = pedir_entero("Seleccione una opción de búsqueda: ", 1, 3)
+    codigo_a_buscar = pedir_entero_minimo("Ingrese el código del destino a buscar: ", 1)
+    posicion_destino = buscar_codigo(codigos_destinos, codigo_a_buscar)
 
-    if opcion_busqueda == 1:
-        codigo_a_buscar = pedir_entero_minimo("Ingrese el código del destino a buscar: ", 1)
-        posicion_destino = buscar_codigo(codigos_destinos, codigo_a_buscar)
-
-        if posicion_destino != -1:
-            mostrar_datos_destino(posicion_destino)
-        else:
-            print("No se encontró un destino con ese código.")
-    elif opcion_busqueda == 2:
-        nombre_a_buscar = input("Ingrese el nombre del destino a buscar: ")
-        encontrado = False
-        for i in range(len(nombres_destinos)):
-            if nombres_destinos[i].lower() == nombre_a_buscar.lower():
-                mostrar_datos_destino(i)
-                encontrado = True
-        if not encontrado:
-            print("No se encontró un destino con ese nombre.")
+    if posicion_destino != -1:
+        print("Destino Encontrado:")
+        print("----------------------------------------")
+        print("Código:", codigos_destinos[posicion_destino])
+        print("Nombre:", nombres_destinos[posicion_destino])
+        print("Distancia:", distancias_destinos[posicion_destino], "km")
+        print("Precio base: $", precios_destinos[posicion_destino])
+        print("----------------------------------------")
     else:
-        print("Opción inválida")
-
-def mostrar_datos_destino(posicion):
-    print("\n[ Destino Encontrado ]")
-    print("----------------------------------------")
-    print("Código:", codigos_destinos[posicion])
-    print("Nombre:", nombres_destinos[posicion])
-    print("Distancia:", distancias_destinos[posicion], "km")
-    print("Precio base: $", precios_destinos[posicion])
-    print("----------------------------------------")
+        print("No se encontró un destino con ese código.")
 
 
 def buscar_pasaje_menu():
