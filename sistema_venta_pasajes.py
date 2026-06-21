@@ -1,5 +1,5 @@
 # Sistema de Venta de Pasajes
-
+import random
 # Datos
 usuario_admin = "admin"
 contrasenia_admin = "Admin2026!"
@@ -23,7 +23,7 @@ medios_pago_pasajes = [2, 1, 3, 2, 1, 3, 2, 1, 3, 2]  # 1 efectivo, 2 tarjeta, 3
 
 # Funciones
 
-# Auxiliares
+## Auxiliares
 def es_entero(var_str):
     try:
         var_int = int(var_str)
@@ -40,7 +40,7 @@ def es_flotante(var_str):
         res = False
     return res
 
-# Busca si existe el codigo en la lista y en caso de que si, devuelve la posicion 
+# Busca si existe el codigo en la lista y en caso de que si, devuelve la posicion y, sino, deuvelve -1
 def buscar_codigo(lista_codigos, codigo): #BUSQUEDA SECUENCIAL
     pos = -1
     i = 0
@@ -49,13 +49,6 @@ def buscar_codigo(lista_codigos, codigo): #BUSQUEDA SECUENCIAL
             pos = i
         i = i + 1
     return pos
-
-def existe_codigo(lista_codigos, codigo):
-    pos = buscar_codigo(lista_codigos, codigo)
-    if pos == -1:
-        return False
-    else:
-        return True
 
 def pedir_entero_minimo(mensaje, minimo):
     valido = False
@@ -99,7 +92,7 @@ def pedir_entero(mensaje, minimo, maximo):
                 valido = True
     return numero
 
-# Inicio de sesión
+## Inicio de sesión
 def login(usuario, contrasenia):
     acceso = False
     intentos = 0
@@ -114,7 +107,8 @@ def login(usuario, contrasenia):
     else:
         acceso = True
     return acceso
-# Menús
+
+## Menús
 def menu_principal():
     opcion_menu = 0
     while opcion_menu != 6:
@@ -285,44 +279,54 @@ def menu_estadisticas():
             volver_menu()
 
 
-# CRUD Clientes
+## CRUD Clientes
 def agregar_cliente():
     print("--------------- Agregar un Cliente Nuevo ---------------")
-     
-    codigo_cliente_nuevo=pedir_entero_minimo("Ingrese el código del cliente que desea agregar: ",1)
-    while buscar_codigo(codigos_clientes, codigo_cliente_nuevo) !=-1:
-        print ("ERROR! Ese código ya se encuentra registrado.")
-        codigo_cliente_nuevo=pedir_entero_minimo("Ingrese otro código: ",1)
-
-    nombre_cliente_nuevo= input("Ingrese el nombre del cliente: ")
-    while nombre_cliente_nuevo=="":
+    nombre_cliente_nuevo = input("Ingrese el nombre del cliente: ")
+    # Valida que no ingresen un nombre vacío
+    while nombre_cliente_nuevo == "":
         print("ERROR! Nombre vacío.")
-        nombre_cliente_nuevo=input("Ingrese otro nombre: ")
-
-    edad_cliente_nuevo=pedir_entero("Ingrese la edad del cliente: ",1, 200)
-
-    tipo_cliente_nuevo=pedir_entero("Ingrese tipo (1=Regular/2=Frecuente): ", 1, 2)
-
-    codigos_clientes.append(codigo_cliente_nuevo)
+        nombre_cliente_nuevo = input("Ingrese otro nombre: ")
+    # Valida que ingresen una edad válida (entre 1 y 200)
+    edad_cliente_nuevo = pedir_entero("Ingrese la edad del cliente: ",1,200)
+    # Valida que ingresen un tipo de cliente válido (1 o 2)
+    tipo_cliente_nuevo = pedir_entero("Ingrese tipo (1=Regular/2=Frecuente): ", 1, 2)
+    # Genera un código de cliente aleatorio entre 1 y 10000
+    codigo_cliente_nuevo = random.randint(1,10000)
+    # Valida que el código generado no exista y, si está ok, lo agrega a la lista
+    while buscar_codigo(codigos_clientes, codigo_cliente_nuevo) == -1:
+        codigos_clientes.append(codigo_cliente_nuevo)
+    # Se agregan el resto de los campos
     nombres_clientes.append(nombre_cliente_nuevo)
     edades_clientes.append(edad_cliente_nuevo)
     tipos_clientes.append(tipo_cliente_nuevo)
 
     print("Cliente agregado correctamente.")
 
+def listar_clientes():
+    # Se muestran los clientes ordenados por código
+    ordenar_clientes_codigo()
+    print("\n--------------- LISTADO DE CLIENTES ---------------")
+    for i in range(len(codigos_clientes)):
+        print("----------------------------------------")
+        print("Código:", codigos_clientes[i])
+        print("Nombre:", nombres_clientes[i])
+        print("Edad:", edades_clientes[i])
+        if tipos_clientes[i] == 1:
+            print("Tipo: Regular")
+        else:
+            print("Tipo: Frecuente")
+    print("----------------------------------------")
+
 def modificar_cliente():
-
     print("------------------- Modificar Cliente ------------------")
-
-    codigo = pedir_entero_minimo(
-        "Ingrese el código del cliente a modificar: ", 1
-    )
-
+    # Valida que se ingrese un entero mayor a 1
+    codigo = pedir_entero_minimo("Ingrese el código del cliente a modificar: ", 1)
+    # Busca primero que exista (o no) el cliente a modificar
     posicion = buscar_codigo(codigos_clientes, codigo)
-
+    # Si no existe el cliente
     if posicion == -1:
         print("ERROR! No existe un cliente con ese código.")
-
     else:
         print("\nDatos actuales del cliente")
         print("--------------------------------")
@@ -332,24 +336,15 @@ def modificar_cliente():
         print("Tipo:", tipos_clientes[posicion])
         print("--------------------------------")
 
-        # Modificar nombre
         nuevo_nombre = input("Ingrese el nuevo nombre: ")
-
+        # Valida que no ingresen un nombre vacío
         while nuevo_nombre == "":
             print("ERROR! El nombre no puede estar vacío.")
             nuevo_nombre = input("Ingrese el nuevo nombre: ")
-
-        # Modificar edad
-
-        nueva_edad = pedir_entero(
-            "Ingrese la nueva edad: ", 1, 200
-        )
-
-        # Modificar tipo de cliente
-        nuevo_tipo = pedir_entero(
-            "Ingrese el nuevo tipo (1=Regular / 2=Frecuente): ", 1, 2
-        )
-
+        # Valida que la edad nueva sea un entero entre 1 y 200
+        nueva_edad = pedir_entero("Ingrese la nueva edad: ", 1, 200)
+        # Valida que el nuevo tipo de cliente sea un entero entre 1 y 2
+        nuevo_tipo = pedir_entero("Ingrese el nuevo tipo de cliente (1=Regular/2=Frecuente): ", 1, 2)
         # Guardar modificaciones
         nombres_clientes[posicion] = nuevo_nombre
         edades_clientes[posicion] = nueva_edad
@@ -358,194 +353,142 @@ def modificar_cliente():
         print("Cliente modificado correctamente.")
 
 def eliminar_cliente():
-
     print("------------------- Eliminar Cliente ------------------")
-
+    # Valida que se ingrese un entero mayor a 1
     codigo = pedir_entero_minimo("Ingrese el código del cliente a eliminar: ", 1)
-
+    # Busca primero que exista (o no) el cliente a eliminar
     posicion_cliente = buscar_codigo(codigos_clientes, codigo)
-
+    # Si existe
     if posicion_cliente != -1:
-
-        # Verificar si tiene pasajes asociados
+        # Verifica si tiene pasajes asociados -> si tiene no permite eliminarlo para preservar la integridad de los datos
         tiene_pasajes = False
-
+        # Busca si hay algun pasaje asociado
         for i in range(len(codigos_cliente_pasajes)):
             if codigos_cliente_pasajes[i] == codigo:
                 tiene_pasajes = True
-
+        # Si el cliente tiene un pasaje le avisa al usuario
         if tiene_pasajes:
             print("ERROR! No se puede eliminar el cliente porque tiene pasajes asociados.")
         else:
-
-            confirmar = input(
-                "¿Está seguro que desea eliminar al cliente? (SI/NO): "
-            )
-
-
+            confirmar = input("¿Está seguro que desea eliminar al cliente? (SI/NO): ")
+            # Valida que ingresen SI o NO sin importar las mayúsculas o minúsculas
             while confirmar != "SI" and confirmar != "si" and confirmar != "NO" and confirmar != "no":
                 print("ERROR! Debe ingresar SI o NO.")
-                confirmar = input(
-                    "¿Está seguro que desea eliminar al cliente? (SI/NO): "
-                )
-
-            if confirmar == "SI" or confirmar == "si": #aca podriamos usar upper() o lower() pero no me acuerdo si lo vimos en clase (para no poner SI o si)
-
+                confirmar = input("¿Está seguro que desea eliminar al cliente? (SI/NO): ")
+            if confirmar == "SI" or confirmar == "si":
+                # Eliminamos al cliente de todas las listas paralelas de Clientes
                 codigos_clientes.pop(posicion_cliente)
                 nombres_clientes.pop(posicion_cliente)
                 edades_clientes.pop(posicion_cliente)
                 tipos_clientes.pop(posicion_cliente)
-
                 print("Cliente eliminado correctamente.")
-
             elif confirmar == "NO" or confirmar == "no":
                 print("Operación cancelada.")
-                eliminar_cliente()
-
     else:
         print("ERROR! No existe un cliente con ese código.")
 
-def listar_clientes():
-
-    ordenar_clientes_codigo()
-
-    print("\n--------------- LISTADO DE CLIENTES ---------------")
-
-    for i in range(len(codigos_clientes)):
-
-        print("----------------------------------------")
-        print("Código:", codigos_clientes[i])
-        print("Nombre:", nombres_clientes[i])
-        print("Edad:", edades_clientes[i])
-
-        if tipos_clientes[i] == 1:
-            print("Tipo: Regular")
-        else:
-            print("Tipo: Frecuente")
-
-    print("----------------------------------------")
-
-# CRUD Destinos
+## CRUD Destinos
 def agregar_destino():
-
     print("--------------- Agregar un Destino Nuevo ---------------")
-
-    codigo_destino_nuevo = pedir_entero_minimo(
-        "Ingrese el código del destino: ", 1
-    )
-
-    while buscar_codigo(codigos_destinos, codigo_destino_nuevo) != -1:
-        print("ERROR! Ese código ya existe.")
-        codigo_destino_nuevo = pedir_entero_minimo(
-            "Ingrese otro código: ", 1
-        )
-
     nombre_destino_nuevo = input("Ingrese nombre del destino: ")
-
+    # Valida que no ingresen un nombre de destino vacío
     while nombre_destino_nuevo == "":
         print("ERROR! Nombre vacío.")
         nombre_destino_nuevo = input("Ingrese otro nombre: ")
-
-    distancia_destino_nuevo = pedir_flotante_minimo(
-        "Ingrese distancia (km): ", 1.0
-    )
-
-    precio_destino_nuevo = pedir_entero_minimo(
-        "Ingrese precio base: ", 1
-    )
-
-    codigos_destinos.append(codigo_destino_nuevo)
+    # Valida que ingresen una distancia válida (un flotante positivo)
+    distancia_destino_nuevo = pedir_flotante_minimo("Ingrese distancia (km): ", 1.0)
+    # Valida que ingresen un precio válido (un flotante positivo)
+    precio_destino_nuevo = pedir_flotante_minimo("Ingrese precio base: ", 1.0)
+    # Genera un código de destino aleatorio entre 1 y 10000
+    codigo_destino_nuevo = random.randint(1,10000)
+    while buscar_codigo(codigos_destinos, codigo_destino_nuevo) == -1:
+        codigos_destinos.append(codigo_destino_nuevo)
+    # Se agregan el resto de los campos
     nombres_destinos.append(nombre_destino_nuevo)
     distancias_destinos.append(distancia_destino_nuevo)
     precios_destinos.append(precio_destino_nuevo)
 
     print("Destino agregado correctamente.")
 
+def listar_destinos():
+    # Se ordenan los destinos por distancia
+    ordenar_destinos_distancia()
+    print("\n--------------- LISTADO DE DESTINOS ---------------")
+    for i in range(len(codigos_destinos)):
+        print("----------------------------------------")
+        print("Código:", codigos_destinos[i])
+        print("Nombre:", nombres_destinos[i])
+        print("Distancia:", distancias_destinos[i], "km")
+        print(f"Precio base: ${precios_destinos[i]} ARS")
+
+def modificar_destino():
+    print("------------------- Modificar Destino ------------------")
+    # Valida que se ingrese un entero mayor a 1
+    codigo = pedir_entero_minimo("Ingrese código del destino a modificar: ", 1)
+    # Busca primero que exista (o no) el destino a modificar
+    posicion = buscar_codigo(codigos_destinos, codigo)
+    # Si existe
+    if posicion != -1:
+        print("\nDatos actuales del destino")
+        print("--------------------------------")
+        print("Código:", codigos_destinos[posicion])
+        print("Nombre:", nombres_destinos[posicion])
+        print("Distancia (km):", distancias_destinos[posicion])
+        print("Precio base (ARS) $", precios_destinos[posicion])
+        print("--------------------------------")
+        nuevo_nombre = input("Nuevo nombre: ")
+        # Valida que no ingresen un nombre vacío
+        while nuevo_nombre == "":
+            print("ERROR! Nombre vacío.")
+            nuevo_nombre = input("Nuevo nombre: ")
+        # Valida que ingresen una distancia decimal positiva
+        nueva_distancia = pedir_flotante_minimo("Nueva distancia: ", 1.0)
+        # Valida que ingresen un precio decimal positivo
+        nuevo_precio = pedir_flotante_minimo("Nuevo precio: ", 1.0)
+        # Guardar modificaciones
+        nombres_destinos[posicion] = nuevo_nombre
+        distancias_destinos[posicion] = nueva_distancia
+        precios_destinos[posicion] = nuevo_precio
+
+        print("Destino modificado correctamente.")
+    else:
+        print("ERROR! No existe ese destino.")
+
 def eliminar_destino():
-
     print("------------------- Eliminar Destino ------------------")
-
+    # Valida que se ingrese un entero mayor a 1
     codigo = pedir_entero_minimo("Ingrese código del destino a eliminar: ", 1)
-
+    # Busca primero que exista (o no) el destino a eliminar
     posicion_destino = buscar_codigo(codigos_destinos, codigo)
-
+    # Si existe
     if posicion_destino != -1:
-        # Verificar si tiene pasajes asociados
+        # Verifica si tiene pasajes asociados -> si tiene no permite eliminarlo para preservar la integridad de los datos
         tiene_pasajes = False
         for i in range(len(codigos_destino_pasajes)):
             if codigos_destino_pasajes[i] == codigo:
                 tiene_pasajes = True
-
+        # Si existe un pasaje con ese destino le avisa al usuario
         if tiene_pasajes:
             print("ERROR! No se puede eliminar porque tiene pasajes asociados.")
         else:
             confirmacion = input("¿Está seguro que desea eliminar el destino? (SI/NO): ")
-
+            # Valida que ingresen SI o NO sin importar las mayúsculas o minúsculas
             while confirmacion != "SI" and confirmacion != "si" and confirmacion != "NO" and confirmacion != "no":
                 print("ERROR! Debe escribir si o no.")
                 confirmacion = input("¿Está seguro que desea eliminar el destino? (SI/NO): ")
-
             if confirmacion == "SI" or confirmacion == "si":
+                # Eliminamos al destino de todas las listas paralelas de Destinos
                 codigos_destinos.pop(posicion_destino)
                 nombres_destinos.pop(posicion_destino)
                 distancias_destinos.pop(posicion_destino)
                 precios_destinos.pop(posicion_destino)
-
                 print("Destino eliminado correctamente.")
             else:
                 print("Operación cancelada")
     else:
         print("ERROR! No existe un destino con ese código.")
 
-def modificar_destino():
-    print("------------------- Modificar Destino ------------------")
-
-    codigo = pedir_entero_minimo("Ingrese código del destino a modificar: ", 1)
-
-    posicion = buscar_codigo(codigos_destinos, codigo)
-
-    if posicion != -1:
-
-        print("Nombre actual:", nombres_destinos[posicion])
-        nuevo_nombre = input("Nuevo nombre: ")
-
-        while nuevo_nombre == "":
-            print("ERROR! Nombre vacío.")
-            nuevo_nombre = input("Nuevo nombre: ")
-
-        print("Distancia actual:", distancias_destinos[posicion])
-        nueva_distancia = pedir_flotante_minimo(
-            "Nueva distancia: ", 1.0
-        )
-
-        print("Precio actual:", precios_destinos[posicion])
-        nuevo_precio = pedir_entero_minimo(
-            "Nuevo precio: ", 1
-        )
-
-        nombres_destinos[posicion] = nuevo_nombre
-        distancias_destinos[posicion] = nueva_distancia
-        precios_destinos[posicion] = nuevo_precio
-
-        print("Destino modificado correctamente.")
-
-    else:
-        print("ERROR! No existe ese destino.")
-
-def listar_destinos():
-    ordenar_destinos_distancia()
-
-    print("\n--------------- LISTADO DE DESTINOS ---------------")
-
-    for i in range(len(codigos_destinos)):
-
-        print("----------------------------------------")
-        print("Código:", codigos_destinos[i])
-        print("Nombre:", nombres_destinos[i])
-        print("Distancia:", distancias_destinos[i], "km")
-        print("Precio base:", precios_destinos[i], "ARS")
-
-# CRUD Pasajes
+## CRUD Pasajes
 def agregar_pasaje():
     print("--------------- Agregar un Pasaje Nuevo ---------------")
     codigo_pasaje_nuevo=int(input("Ingrese el código del pasaje que desea agregar: "))
@@ -613,53 +556,51 @@ def modificar_pasaje():
     print("------------------- Modificar Pasaje ------------------")
 
     pasaje_a_modificar = pedir_entero_minimo("Ingrese el código del pasaje a modificar: ",1)
-    existe_pasaje = existe_codigo(codigos_pasajes, pasaje_a_modificar)
+    posicion_pasaje = buscar_codigo(codigos_pasajes, pasaje_a_modificar)
 
-    if existe_pasaje:
+    if posicion_pasaje != -1:
 
-        posicion = buscar_codigo(codigos_pasajes, pasaje_a_modificar)
-
-        print("Pasaje", codigos_pasajes[posicion])
+        print("Pasaje", codigos_pasajes[posicion_pasaje])
 
         # MODIFICAR CLIENTE
-        print("Código cliente actual:", codigos_cliente_pasajes[posicion])
+        print("Código cliente actual:", codigos_cliente_pasajes[posicion_pasaje])
         nuevo_codigo_cliente = es_entero(input("Nuevo código cliente: "))
 
-        while existe_codigo(codigos_clientes, nuevo_codigo_cliente) == False:
+        while buscar_codigo(codigos_clientes, nuevo_codigo_cliente) == -1:
             print("ERROR. Ese cliente no existe.")
             nuevo_codigo_cliente = es_entero(input("Ingrese otro código cliente: "))
 
-        codigos_cliente_pasajes[posicion] = nuevo_codigo_cliente
+        codigos_cliente_pasajes[posicion_pasaje] = nuevo_codigo_cliente
 
         # MODIFICAR DESTINO
-        print("Código destino actual:", codigos_destino_pasajes[posicion])
+        print("Código destino actual:", codigos_destino_pasajes[posicion_pasaje])
         nuevo_codigo_destino = es_entero(input("Nuevo código destino: "))
 
-        while existe_codigo(codigos_destinos, nuevo_codigo_destino) == False:
+        while buscar_codigo(codigos_destinos, nuevo_codigo_destino) == -1:
             print("ERROR. Ese destino no existe.")
             nuevo_codigo_destino = es_entero(input("Ingrese otro código destino: "))
 
-        codigos_destino_pasajes[posicion] = nuevo_codigo_destino
+        codigos_destino_pasajes[posicion_pasaje] = nuevo_codigo_destino
 
         # MODIFICAR CANTIDAD
-        print("Cantidad actual:", cantidades_pasajes[posicion])
+        print("Cantidad actual:", cantidades_pasajes[posicion_pasaje])
         nueva_cantidad = es_entero(input("Nueva cantidad: "))
 
         while nueva_cantidad <= 0:
             print("ERROR. La cantidad debe ser mayor a 0.")
             nueva_cantidad = es_entero(input("Nueva cantidad: "))
 
-        cantidades_pasajes[posicion] = nueva_cantidad
+        cantidades_pasajes[posicion_pasaje] = nueva_cantidad
 
         # MODIFICAR MEDIO DE PAGO
-        print("Medio de pago actual:", medios_pago_pasajes[posicion])
+        print("Medio de pago actual:", medios_pago_pasajes[posicion_pasaje])
         nuevo_medio_pago = es_entero(input("Nuevo medio de pago (1=Efectivo, 2=Tarjeta, 3=Transferencia): "))
 
         while nuevo_medio_pago < 1 or nuevo_medio_pago > 3:
             print("ERROR. Debe ingresar 1, 2 o 3.")
             nuevo_medio_pago = es_entero(input("Nuevo medio de pago: "))
 
-        medios_pago_pasajes[posicion] = nuevo_medio_pago
+        medios_pago_pasajes[posicion_pasaje] = nuevo_medio_pago
 
         print("Pasaje modificado correctamente.")
 
