@@ -201,14 +201,14 @@ def menu_pasajes():
     while opcion_pasajes != 5:
 
         print('''
-        -------------------------------------
-        |      Gestión de Pasajes           |
-        | 1. Agregar pasaje                 |
-        | 2. Eliminar pasaje                |
-        | 3. Modificar pasaje               |
-        | 4. Listar pasajes                 |
-        | 5. Volver al menú principal       |
-        -------------------------------------
+        ----------------------------------------
+        |         Gestión de Pasajes           |
+        |    1. Agregar pasaje                 |
+        |    2. Eliminar pasaje                |
+        |    3. Modificar pasaje               |
+        |    4. Listar pasajes                 |
+        |    5. Volver al menú principal       |
+        ----------------------------------------
         ''')
 
         opcion_pasajes = pedir_entero("Seleccione una opción: ", 1, 5)
@@ -229,15 +229,14 @@ def menu_busquedas():
 
     while opcion_busquedas != 4:
         print('''
-        -------------------------------------
-        |           Búsquedas               |
-        | 1. Buscar cliente                 |
-        | 2. Buscar destino                 |
-        | 3. Buscar pasaje                  |
-        | 4. Volver al menú principal       |
-        -------------------------------------
+        ----------------------------------------
+        |           Búsquedas                  |
+        |    1. Buscar cliente                 |
+        |    2. Buscar destino                 |
+        |    3. Buscar pasaje                  |
+        |    4. Volver al menú principal       |
+        ----------------------------------------
         ''')
-
         opcion_busquedas = pedir_entero("Seleccione una opción: ", 1, 4)
 
         if opcion_busquedas == 1:
@@ -255,14 +254,14 @@ def menu_estadisticas():
     while opcion_estadisticas != 5:
 
         print('''
-        ------------------------------------------
-        |           Estadísticas                 |
-        | 1. Pasajes por destino y medio de pago |
-        | 2. Pasajes por tipo de cliente         |
-        | 3. Pasajes por destino                 |
-        | 4. Pasajes por medio de pago           |
-        | 5. Volver al menú principal            |
-        ------------------------------------------
+        -------------------------------------------
+        |           Estadísticas                  |
+        | 1. Pasajes por destino y medio de pago  |
+        | 2. Pasajes por tipo de cliente          |
+        | 3. Total Pasajes por destino            |
+        | 4. Distribución ventas por medio de pago|
+        | 5. Volver al menú principal             |
+        -------------------------------------------
         ''')
 
         opcion_estadisticas = pedir_entero("Seleccione una opción: ", 1, 5)
@@ -274,7 +273,7 @@ def menu_estadisticas():
         elif opcion_estadisticas == 3:
             estadistica_pasaje_destino()        
         elif opcion_estadisticas == 4:
-            estadistica_medio_pago()
+            estadistica_ventas_medio_pago()
         elif opcion_estadisticas == 5:
             volver_menu()
 
@@ -304,11 +303,22 @@ def agregar_cliente():
     print("Cliente agregado correctamente.")
 
 def listar_clientes():
-    # Se muestran los clientes ordenados por código
-    ordenar_clientes_codigo()
+    print("----------------------------------------")
+    print("\n¿Cómo desea ordenar los clientes?")
+    print("1. Por código")
+    print("2. Por edad")
+
+    opcion = pedir_entero("Seleccione una opción: ", 1, 2)
+
+    if opcion == 1:
+        ordenar_clientes_codigo()
+    else:
+        ordenar_clientes_edad()
+
     print("\n--------------- LISTADO DE CLIENTES ---------------")
+
     for i in range(len(codigos_clientes)):
-        print("----------------------------------------")
+        print("---------------------")
         print("Código:", codigos_clientes[i])
         print("Nombre:", nombres_clientes[i])
         print("Edad:", edades_clientes[i])
@@ -316,7 +326,7 @@ def listar_clientes():
             print("Tipo: Regular")
         else:
             print("Tipo: Frecuente")
-    print("----------------------------------------")
+        print("---------------------")
 
 def modificar_cliente():
     print("------------------- Modificar Cliente ------------------")
@@ -415,8 +425,20 @@ def agregar_destino():
     print("Destino agregado correctamente.")
 
 def listar_destinos():
-    # Se ordenan los destinos por distancia
-    ordenar_destinos_distancia()
+    print("\n¿Cómo desea ordenar los destinos?")
+    print("1. Por código")
+    print("2. Por distancia")
+    print("3. Por precio base")
+
+    opcion = pedir_entero("Seleccione una opción: ", 1, 3)
+
+    if opcion == 1:
+        ordenar_destinos_codigo()
+    elif opcion == 2:
+        ordenar_destinos_distancia()
+    else:
+        ordenar_destinos_precio()
+
     print("\n--------------- LISTADO DE DESTINOS ---------------")
     for i in range(len(codigos_destinos)):
         print("----------------------------------------")
@@ -524,8 +546,20 @@ def agregar_pasaje():
     print("Pasaje agregado correctamente.")
 
 def listar_pasajes():
-    # Se ordenan los pasajes por cantidad
-    ordenar_pasajes_cantidad()
+    print("\n¿Cómo desea ordenar los pasajes?")
+    print("1. Por código")
+    print("2. Por cantidad")
+    print("3. Por medio de pago")
+
+    opcion = pedir_entero("Seleccione una opción: ", 1, 3)
+
+    if opcion == 1:
+        ordenar_pasajes_codigo()
+    elif opcion == 2:
+        ordenar_pasajes_cantidad()
+    else:
+        ordenar_pasajes_medio_pago()
+
     print("\n--------------- LISTADO DE PASAJES ---------------")
     for i in range(len(codigos_pasajes)):
         print("----------------------------------------")
@@ -630,7 +664,18 @@ def ordenar_clientes_codigo():
         nombres_clientes[i], nombres_clientes[pos_menor] = nombres_clientes[pos_menor], nombres_clientes[i]
         edades_clientes[i], edades_clientes[pos_menor] = edades_clientes[pos_menor], edades_clientes[i]
         tipos_clientes[i], tipos_clientes[pos_menor] = tipos_clientes[pos_menor], tipos_clientes[i]
-    print("Clientes ordenados por código.")
+
+def ordenar_clientes_edad():
+    for i in range(len(edades_clientes) - 1):
+        pos_menor = i
+        for j in range(i + 1, len(edades_clientes)):
+            if edades_clientes[j] < edades_clientes[pos_menor]:
+                pos_menor = j
+        if pos_menor != i:
+            edades_clientes[i], edades_clientes[pos_menor] = edades_clientes[pos_menor], edades_clientes[i]
+            codigos_clientes[i], codigos_clientes[pos_menor] = codigos_clientes[pos_menor], codigos_clientes[i]
+            nombres_clientes[i], nombres_clientes[pos_menor] = nombres_clientes[pos_menor], nombres_clientes[i]
+            tipos_clientes[i], tipos_clientes[pos_menor] = tipos_clientes[pos_menor], tipos_clientes[i]
 
 #DESTINOS--> Burbujeo
 def ordenar_destinos_distancia():
@@ -641,7 +686,24 @@ def ordenar_destinos_distancia():
                 codigos_destinos[j], codigos_destinos[j+1] = codigos_destinos[j+1], codigos_destinos[j]
                 nombres_destinos[j], nombres_destinos[j+1] = nombres_destinos[j+1], nombres_destinos[j]
                 precios_destinos[j], precios_destinos[j+1] = precios_destinos[j+1], precios_destinos[j]
-    print("Destinos ordenados por distancia.")
+
+def ordenar_destinos_codigo():
+    for i in range(len(codigos_destinos) - 1):
+        for j in range(len(codigos_destinos) - 1 - i):
+            if codigos_destinos[j] > codigos_destinos[j + 1]:
+                codigos_destinos[j], codigos_destinos[j + 1] = codigos_destinos[j + 1], codigos_destinos[j]
+                nombres_destinos[j], nombres_destinos[j + 1] = nombres_destinos[j + 1], nombres_destinos[j]
+                distancias_destinos[j], distancias_destinos[j + 1] = distancias_destinos[j + 1], distancias_destinos[j]
+                precios_destinos[j], precios_destinos[j + 1] = precios_destinos[j + 1], precios_destinos[j]
+
+def ordenar_destinos_precio():
+    for i in range(len(precios_destinos) - 1):
+        for j in range(len(precios_destinos) - 1 - i):
+            if precios_destinos[j] > precios_destinos[j + 1]:
+                precios_destinos[j], precios_destinos[j + 1] = precios_destinos[j + 1], precios_destinos[j]
+                codigos_destinos[j], codigos_destinos[j + 1] = codigos_destinos[j + 1], codigos_destinos[j]
+                nombres_destinos[j], nombres_destinos[j + 1] = nombres_destinos[j + 1], nombres_destinos[j]
+                distancias_destinos[j], distancias_destinos[j + 1] = distancias_destinos[j + 1], distancias_destinos[j]
 
 #PASAJES--> Insercion
 def ordenar_pasajes_cantidad():
@@ -664,7 +726,50 @@ def ordenar_pasajes_cantidad():
         codigos_cliente_pasajes[j+1] = cliente_aux
         codigos_destino_pasajes[j+1] = destino_aux
         medios_pago_pasajes[j+1] = pago_aux
-    print("Pasajes ordenados por cantidad.")
+
+def ordenar_pasajes_codigo():
+    for i in range(1, len(codigos_pasajes)):
+        codigo_aux = codigos_pasajes[i]
+        cliente_aux = codigos_cliente_pasajes[i]
+        destino_aux = codigos_destino_pasajes[i]
+        cantidad_aux = cantidades_pasajes[i]
+        medio_aux = medios_pago_pasajes[i]
+        j = i - 1
+
+        while j >= 0 and codigos_pasajes[j] > codigo_aux:
+            codigos_pasajes[j + 1] = codigos_pasajes[j]
+            codigos_cliente_pasajes[j + 1] = codigos_cliente_pasajes[j]
+            codigos_destino_pasajes[j + 1] = codigos_destino_pasajes[j]
+            cantidades_pasajes[j + 1] = cantidades_pasajes[j]
+            medios_pago_pasajes[j + 1] = medios_pago_pasajes[j]
+            j -= 1
+        codigos_pasajes[j + 1] = codigo_aux
+        codigos_cliente_pasajes[j + 1] = cliente_aux
+        codigos_destino_pasajes[j + 1] = destino_aux
+        cantidades_pasajes[j + 1] = cantidad_aux
+        medios_pago_pasajes[j + 1] = medio_aux
+
+def ordenar_pasajes_medio_pago():
+    for i in range(1, len(medios_pago_pasajes)):
+        medio_aux = medios_pago_pasajes[i]
+        codigo_aux = codigos_pasajes[i]
+        cliente_aux = codigos_cliente_pasajes[i]
+        destino_aux = codigos_destino_pasajes[i]
+        cantidad_aux = cantidades_pasajes[i]
+        j = i - 1
+
+        while j >= 0 and medios_pago_pasajes[j] > medio_aux:
+            medios_pago_pasajes[j + 1] = medios_pago_pasajes[j]
+            codigos_pasajes[j + 1] = codigos_pasajes[j]
+            codigos_cliente_pasajes[j + 1] = codigos_cliente_pasajes[j]
+            codigos_destino_pasajes[j + 1] = codigos_destino_pasajes[j]
+            cantidades_pasajes[j + 1] = cantidades_pasajes[j]
+            j -= 1
+        medios_pago_pasajes[j + 1] = medio_aux
+        codigos_pasajes[j + 1] = codigo_aux
+        codigos_cliente_pasajes[j + 1] = cliente_aux
+        codigos_destino_pasajes[j + 1] = destino_aux
+        cantidades_pasajes[j + 1] = cantidad_aux
 
 # Búsquedas
 def buscar_cliente_menu():
@@ -712,26 +817,22 @@ def buscar_destino_menu():
     opcion_busqueda = pedir_entero("Seleccione una opción de búsqueda: ", 1, 3)
 
     if opcion_busqueda == 1:
-        codigo_a_buscar = int(input("Ingrese el código del destino a buscar: "))
+        codigo_a_buscar = pedir_entero_minimo("Ingrese el código del destino a buscar: ", 1)
         posicion_destino = buscar_codigo(codigos_destinos, codigo_a_buscar)
 
         if posicion_destino != -1:
             mostrar_datos_destino(posicion_destino)
         else:
             print("No se encontró un destino con ese código.")
-        
     elif opcion_busqueda == 2:
         nombre_a_buscar = input("Ingrese el nombre del destino a buscar: ")
         encontrado = False
-
         for i in range(len(nombres_destinos)):
             if nombres_destinos[i].lower() == nombre_a_buscar.lower():
                 mostrar_datos_destino(i)
                 encontrado = True
-
         if not encontrado:
             print("No se encontró un destino con ese nombre.")
-
     else:
         print("Opción inválida")
 
@@ -747,7 +848,7 @@ def mostrar_datos_destino(posicion):
 
 def buscar_pasaje_menu():
     print("------------------- Buscar Pasaje ------------------")
-    codigo_a_buscar = int(input("Ingrese el código del pasaje a buscar: "))
+    codigo_a_buscar = pedir_entero_minimo("Ingrese el código del pasaje a buscar: ", 1)
     posicion_pasaje = buscar_codigo(codigos_pasajes, codigo_a_buscar) #busqueda secuencial
 
     if posicion_pasaje != -1:
@@ -771,22 +872,18 @@ def buscar_pasaje_menu():
 # Estadísticas
 def estadistica_destino_pago():
     matriz = []
-
     # Crear una fila por cada destino
     for i in range(len(codigos_destinos)):
         matriz.append([0, 0, 0])
-
     # Cargar los datos en la matriz
     for i in range(len(codigos_pasajes)):
         codigo_destino = codigos_destino_pasajes[i]
         cantidad = cantidades_pasajes[i]
         medio_pago = medios_pago_pasajes[i]
-
         posicion_destino = buscar_codigo(
             codigos_destinos,
             codigo_destino
         )
-
         if posicion_destino != -1 and medio_pago >= 1 and medio_pago <= 3:
             matriz[posicion_destino][medio_pago - 1] += cantidad
 
@@ -804,24 +901,16 @@ def estadistica_destino_pago():
         )
 
 def estadistica_tipo_cliente():
-
     cantidad_regulares = 0
     cantidad_frecuentes = 0
-
     for i in range(len(codigos_pasajes)):
-
         codigo_cliente = codigos_cliente_pasajes[i]
         cantidad = cantidades_pasajes[i]
-
         posicion_cliente = buscar_codigo(codigos_clientes, codigo_cliente)
-
         if posicion_cliente != -1:
-
             tipo_cliente = tipos_clientes[posicion_cliente]
-
             if tipo_cliente == 1:
                 cantidad_regulares += cantidad
-
             elif tipo_cliente == 2:
                 cantidad_frecuentes += cantidad
 
@@ -830,68 +919,17 @@ def estadistica_tipo_cliente():
     print("Clientes regulares:", cantidad_regulares)
     print("Clientes frecuentes:", cantidad_frecuentes) 
 
-def estadistica_pasajes_destino():
-
-    total_pasajes_destino = []
-
-    # inicializar en 0
-    for i in range(len(codigos_destinos)):
-        total_pasajes_destino.append(0)
-
-    # recorrer pasajes
-    for i in range(len(codigos_pasajes)):
-
-        codigo_destino = codigos_destino_pasajes[i]
-        cantidad = cantidades_pasajes[i]
-
-        posicion_destino = buscar_codigo(codigos_destinos, codigo_destino)
-
-        if posicion_destino != -1:
-            total_pasajes_destino[posicion_destino] += cantidad
-
-    print("\nCantidad de pasajes vendidos por destino")
-    print("-----------------------------------------")
-
-    for i in range(len(codigos_destinos)):
-
-        print("Destino:", nombres_destinos[i])
-        print("Cantidad de pasajes vendidos:", total_pasajes_destino[i])
-        print("----------------------------------")
-
-def estadistica_medio_pago():
-
-    cantidad_pago = [0, 0, 0]
-
-    for i in range(len(codigos_pasajes)):
-
-        medio_pago = medios_pago_pasajes[i]
-
-        cantidad_pago[medio_pago - 1] += 1
-
-    print("\nCantidad de pasajes vendidos por medio de pago")
-    print("---------------------------------------------")
-    print("Efectivo:", cantidad_pago[0])
-    print("Tarjeta:", cantidad_pago[1])
-    print("Transferencia:", cantidad_pago[2])
-    print("----------------------------------")
-
 
 def estadistica_pasaje_destino():
-
     cantidad_pasajes_destino = []
-
     # Inicializar lista en 0
     for i in range(len(codigos_destinos)):
         cantidad_pasajes_destino.append(0)
-
     # Recorrer todos los pasajes
     for i in range(len(codigos_pasajes)):
-
         codigo_destino = codigos_destino_pasajes[i]
         cantidad = cantidades_pasajes[i]
-
         posicion_destino = buscar_codigo(codigos_destinos, codigo_destino)
-
         if posicion_destino != -1:
             cantidad_pasajes_destino[posicion_destino] += cantidad
 
@@ -899,12 +937,28 @@ def estadistica_pasaje_destino():
     print("-----------------------------------------")
 
     for i in range(len(codigos_destinos)):
-
         print("Destino:", nombres_destinos[i])
         print("Cantidad de pasajes vendidos:", cantidad_pasajes_destino[i])
         print("----------------------------------")
 
+def estadistica_ventas_medio_pago():
+    recaudacion = [0, 0, 0]# hay tres medios de pago
 
+    for i in range(len(codigos_pasajes)):
+        codigo_destino = codigos_destino_pasajes[i]
+        cantidad = cantidades_pasajes[i]
+        medio_pago = medios_pago_pasajes[i]
+        posicion_destino = buscar_codigo(codigos_destinos,codigo_destino)
+        if posicion_destino != -1:
+            precio = precios_destinos[posicion_destino]
+            importe = cantidad * precio
+            recaudacion[medio_pago - 1] += importe
+
+    print("\nRecaudación según medio de pago")
+    print("--------------------------------")
+    print("Efectivo      : $", recaudacion[0])
+    print("Tarjeta       : $", recaudacion[1])
+    print("Transferencia : $", recaudacion[2])
 
 ### 
 
