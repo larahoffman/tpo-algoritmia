@@ -809,19 +809,41 @@ def calculo_binario_cliente(codigo_a_buscar):
     
 def buscar_destino_menu():
     print("------------------- Buscar Destino ------------------")
-    codigo_a_buscar = pedir_entero_minimo("Ingrese el código del destino a buscar: ", 1)
-    posicion_destino = buscar_codigo(codigos_destinos, codigo_a_buscar)
+    print("1. Buscar por código")
+    print("2. Buscar por nombre")
+    print("3. Volver al menú principal")
+    print("-----------------------------------")
+    
+    opcion_busqueda = pedir_entero("Seleccione una opción de búsqueda: ", 1, 3)
 
-    if posicion_destino != -1:
-        print("Destino Encontrado:")
-        print("----------------------------------------")
-        print("Código:", codigos_destinos[posicion_destino])
-        print("Nombre:", nombres_destinos[posicion_destino])
-        print("Distancia:", distancias_destinos[posicion_destino], "km")
-        print("Precio base: $", precios_destinos[posicion_destino])
-        print("----------------------------------------")
+    if opcion_busqueda == 1:
+        codigo_a_buscar = pedir_entero_minimo("Ingrese el código del destino a buscar: ", 1)
+        posicion_destino = buscar_codigo(codigos_destinos, codigo_a_buscar)
+
+        if posicion_destino != -1:
+            mostrar_datos_destino(posicion_destino)
+        else:
+            print("No se encontró un destino con ese código.")
+    elif opcion_busqueda == 2:
+        nombre_a_buscar = input("Ingrese el nombre del destino a buscar: ")
+        encontrado = False
+        for i in range(len(nombres_destinos)):
+            if nombres_destinos[i].lower() == nombre_a_buscar.lower():
+                mostrar_datos_destino(i)
+                encontrado = True
+        if not encontrado:
+            print("No se encontró un destino con ese nombre.")
     else:
-        print("No se encontró un destino con ese código.")
+        print("Opción inválida")
+
+def mostrar_datos_destino(posicion):
+    print("\n[ Destino Encontrado ]")
+    print("----------------------------------------")
+    print("Código:", codigos_destinos[posicion])
+    print("Nombre:", nombres_destinos[posicion])
+    print("Distancia:", distancias_destinos[posicion], "km")
+    print("Precio base: $", precios_destinos[posicion])
+    print("----------------------------------------")
 
 
 def buscar_pasaje_menu():
@@ -879,64 +901,96 @@ def estadistica_destino_pago():
         )
 
 def estadistica_tipo_cliente():
-    cantidad_regulares = 0
-    cantidad_frecuentes = 0
+
+    matriz = [[0], [0]]
+
     for i in range(len(codigos_pasajes)):
+
         codigo_cliente = codigos_cliente_pasajes[i]
         cantidad = cantidades_pasajes[i]
-        posicion_cliente = buscar_codigo(codigos_clientes, codigo_cliente)
+
+        posicion_cliente = buscar_codigo(
+            codigos_clientes,
+            codigo_cliente
+        )
+
         if posicion_cliente != -1:
+
             tipo_cliente = tipos_clientes[posicion_cliente]
+
             if tipo_cliente == 1:
-                cantidad_regulares += cantidad
+                matriz[0][0] += cantidad
+
             elif tipo_cliente == 2:
-                cantidad_frecuentes += cantidad
+                matriz[1][0] += cantidad
 
     print("\nCantidad de pasajes por tipo de cliente")
     print("----------------------------------------")
-    print("Clientes regulares:", cantidad_regulares)
-    print("Clientes frecuentes:", cantidad_frecuentes) 
+    print("Tipo Cliente\tCantidad")
+
+    print("Regular\t\t", matriz[0][0])
+    print("Frecuente\t", matriz[1][0])
 
 
 def estadistica_pasaje_destino():
-    cantidad_pasajes_destino = []
-    # Inicializar lista en 0
+
+    matriz = []
+
     for i in range(len(codigos_destinos)):
-        cantidad_pasajes_destino.append(0)
-    # Recorrer todos los pasajes
+        matriz.append([0])
+
     for i in range(len(codigos_pasajes)):
+
         codigo_destino = codigos_destino_pasajes[i]
         cantidad = cantidades_pasajes[i]
-        posicion_destino = buscar_codigo(codigos_destinos, codigo_destino)
+
+        posicion_destino = buscar_codigo(
+            codigos_destinos,
+            codigo_destino
+        )
+
         if posicion_destino != -1:
-            cantidad_pasajes_destino[posicion_destino] += cantidad
+            matriz[posicion_destino][0] += cantidad
 
     print("\nCantidad de pasajes vendidos por destino")
     print("-----------------------------------------")
+    print("Destino\t\tCantidad")
 
-    for i in range(len(codigos_destinos)):
-        print("Destino:", nombres_destinos[i])
-        print("Cantidad de pasajes vendidos:", cantidad_pasajes_destino[i])
-        print("----------------------------------")
+    for i in range(len(matriz)):
+        print(
+            nombres_destinos[i], "\t\t",
+            matriz[i][0]
+        )
 
 def estadistica_ventas_medio_pago():
-    recaudacion = [0, 0, 0]# hay tres medios de pago
+
+    matriz = [[0], [0], [0]]
 
     for i in range(len(codigos_pasajes)):
+
         codigo_destino = codigos_destino_pasajes[i]
         cantidad = cantidades_pasajes[i]
         medio_pago = medios_pago_pasajes[i]
-        posicion_destino = buscar_codigo(codigos_destinos,codigo_destino)
+
+        posicion_destino = buscar_codigo(
+            codigos_destinos,
+            codigo_destino
+        )
+
         if posicion_destino != -1:
+
             precio = precios_destinos[posicion_destino]
             importe = cantidad * precio
-            recaudacion[medio_pago - 1] += importe
+
+            matriz[medio_pago - 1][0] += importe
 
     print("\nRecaudación según medio de pago")
     print("--------------------------------")
-    print("Efectivo      : $", recaudacion[0])
-    print("Tarjeta       : $", recaudacion[1])
-    print("Transferencia : $", recaudacion[2])
+    print("Medio de Pago\tRecaudación")
+
+    print("Efectivo\t$", matriz[0][0])
+    print("Tarjeta\t\t$", matriz[1][0])
+    print("Transferencia\t$", matriz[2][0])
 
 ### 
 
