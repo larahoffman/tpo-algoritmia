@@ -13,7 +13,7 @@ tipos_clientes = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2]   # 1 regular, 2 frecuente
 codigos_destinos = [201, 202, 203, 204, 205, 206, 207, 208, 209, 210]
 nombres_destinos = ["Cordoba", "Rosario", "Mendoza", "Bariloche", "Salta", "Ushuaia", "Mar del Plata", "Neuquen", "San Juan", "Tucuman"]
 distancias_destinos = [700.0, 300.0, 1050.0, 1600.0, 1450.0, 3000.0, 415.0, 1150.0, 1100.0, 1250.0]
-precios_destinos = [12000, 8000, 15000, 20000, 18000, 30000, 9000, 16000, 15500, 17000]
+precios_destinos = [12000.0, 8000.0, 15000.0, 20000.0, 18000.0, 30000.0, 9000.0, 16000.0, 15500.0, 17000.0]
 ## Pasajes
 codigos_pasajes = [301, 302, 303, 304, 305, 306, 307, 308, 309, 310]
 codigos_cliente_pasajes = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110]
@@ -240,11 +240,11 @@ def menu_busquedas():
         opcion_busquedas = pedir_entero("Seleccione una opción: ", 1, 4)
 
         if opcion_busquedas == 1:
-            buscar_cliente_menu()
+            buscar_cliente()
         elif opcion_busquedas == 2:
-            buscar_destino_menu()
+            buscar_destino()
         elif opcion_busquedas == 3:
-            buscar_pasaje_menu()
+            buscar_pasaje()
         elif opcion_busquedas == 4:
             volver_menu()
 
@@ -649,71 +649,134 @@ def eliminar_pasaje():
     else:
         print("ERROR! No existe un pasaje con ese código.")
 
-
 # Ordenamientos
 
 #CLIENTES--> selección
 def ordenar_clientes_codigo():
     for i in range(len(codigos_clientes)-1):
+        # Primero busca la posición del menor elemento dentro de la parte no ordenada
         pos_menor = i
         for j in range(i+1, len(codigos_clientes)):
             if codigos_clientes[j] < codigos_clientes[pos_menor]:
                 pos_menor = j
+        # Intercambio elemento actual con el menor solo si el minimo no esta ya en su posición
+        if pos_menor != i:
+            aux = codigos_clientes[i]
+            codigos_clientes[i] = codigos_clientes[pos_menor]
+            codigos_clientes[pos_menor] = aux
 
-        codigos_clientes[i], codigos_clientes[pos_menor] = codigos_clientes[pos_menor], codigos_clientes[i]
-        nombres_clientes[i], nombres_clientes[pos_menor] = nombres_clientes[pos_menor], nombres_clientes[i]
-        edades_clientes[i], edades_clientes[pos_menor] = edades_clientes[pos_menor], edades_clientes[i]
-        tipos_clientes[i], tipos_clientes[pos_menor] = tipos_clientes[pos_menor], tipos_clientes[i]
+            aux = nombres_clientes[i]
+            nombres_clientes[i] = nombres_clientes[pos_menor]
+            nombres_clientes[pos_menor] = aux
+
+            aux = edades_clientes[i]
+            edades_clientes[i] = edades_clientes[pos_menor]
+            edades_clientes[pos_menor] = aux
+
+            aux = tipos_clientes[i]
+            tipos_clientes[i] = tipos_clientes[pos_menor]
+            tipos_clientes[pos_menor] = aux
 
 def ordenar_clientes_edad():
     for i in range(len(edades_clientes) - 1):
+        # Primero busca la posición del menor elemento dentro de la parte no ordenada
         pos_menor = i
         for j in range(i + 1, len(edades_clientes)):
             if edades_clientes[j] < edades_clientes[pos_menor]:
                 pos_menor = j
+        # Intercambio elemento actual con el menor solo si el minimo no esta ya en su posición
         if pos_menor != i:
-            edades_clientes[i], edades_clientes[pos_menor] = edades_clientes[pos_menor], edades_clientes[i]
-            codigos_clientes[i], codigos_clientes[pos_menor] = codigos_clientes[pos_menor], codigos_clientes[i]
-            nombres_clientes[i], nombres_clientes[pos_menor] = nombres_clientes[pos_menor], nombres_clientes[i]
-            tipos_clientes[i], tipos_clientes[pos_menor] = tipos_clientes[pos_menor], tipos_clientes[i]
+            aux = edades_clientes[i]
+            edades_clientes[i] = edades_clientes[pos_menor]
+            edades_clientes[pos_menor] = aux
+
+            aux = codigos_clientes[i]
+            codigos_clientes[i] = codigos_clientes[pos_menor]
+            codigos_clientes[pos_menor] = aux
+
+            aux = nombres_clientes[i]
+            nombres_clientes[i] = nombres_clientes[pos_menor]
+            nombres_clientes[pos_menor] = aux
+
+            aux = tipos_clientes[i]
+            tipos_clientes[i] = tipos_clientes[pos_menor]
+            tipos_clientes[pos_menor] = aux
 
 #DESTINOS--> Burbujeo
 def ordenar_destinos_distancia():
     for i in range(len(distancias_destinos)-1):
         for j in range(len(distancias_destinos)-1-i):
+            # Si están en orden incorrecto, los intercambia
             if distancias_destinos[j] > distancias_destinos[j+1]:
-                distancias_destinos[j], distancias_destinos[j+1] = distancias_destinos[j+1], distancias_destinos[j]
-                codigos_destinos[j], codigos_destinos[j+1] = codigos_destinos[j+1], codigos_destinos[j]
-                nombres_destinos[j], nombres_destinos[j+1] = nombres_destinos[j+1], nombres_destinos[j]
-                precios_destinos[j], precios_destinos[j+1] = precios_destinos[j+1], precios_destinos[j]
+                aux = distancias_destinos[j]
+                distancias_destinos[j] = distancias_destinos[j+1]
+                distancias_destinos[j+1] = aux
+
+                aux = codigos_destinos[j]
+                codigos_destinos[j] = codigos_destinos[j+1]
+                codigos_destinos[j+1] = aux
+
+                aux = nombres_destinos[j]
+                nombres_destinos[j] = nombres_destinos[j+1]
+                nombres_destinos[j+1] = aux
+
+                aux = precios_destinos[j]
+                precios_destinos[j] = precios_destinos[j+1]
+                precios_destinos[j+1] = aux
 
 def ordenar_destinos_codigo():
     for i in range(len(codigos_destinos) - 1):
         for j in range(len(codigos_destinos) - 1 - i):
+            # Si están en orden incorrecto, los intercambia
             if codigos_destinos[j] > codigos_destinos[j + 1]:
-                codigos_destinos[j], codigos_destinos[j + 1] = codigos_destinos[j + 1], codigos_destinos[j]
-                nombres_destinos[j], nombres_destinos[j + 1] = nombres_destinos[j + 1], nombres_destinos[j]
-                distancias_destinos[j], distancias_destinos[j + 1] = distancias_destinos[j + 1], distancias_destinos[j]
-                precios_destinos[j], precios_destinos[j + 1] = precios_destinos[j + 1], precios_destinos[j]
+                aux = codigos_destinos[j]
+                codigos_destinos[j] = codigos_destinos[j+1]
+                codigos_destinos[j+1] = aux
+
+                aux = nombres_destinos[j]
+                nombres_destinos[j] = nombres_destinos[j+1]
+                nombres_destinos[j+1] = aux
+
+                aux = distancias_destinos[j]
+                distancias_destinos[j] = distancias_destinos[j+1]
+                distancias_destinos[j+1] = aux
+
+                aux = precios_destinos[j]
+                precios_destinos[j] = precios_destinos[j+1]
+                precios_destinos[j+1] = aux
 
 def ordenar_destinos_precio():
     for i in range(len(precios_destinos) - 1):
         for j in range(len(precios_destinos) - 1 - i):
+            # Si el precio actual es mayor que el siguiente, los intercambia
             if precios_destinos[j] > precios_destinos[j + 1]:
-                precios_destinos[j], precios_destinos[j + 1] = precios_destinos[j + 1], precios_destinos[j]
-                codigos_destinos[j], codigos_destinos[j + 1] = codigos_destinos[j + 1], codigos_destinos[j]
-                nombres_destinos[j], nombres_destinos[j + 1] = nombres_destinos[j + 1], nombres_destinos[j]
-                distancias_destinos[j], distancias_destinos[j + 1] = distancias_destinos[j + 1], distancias_destinos[j]
+                aux = precios_destinos[j]
+                precios_destinos[j] = precios_destinos[j+1]
+                precios_destinos[j+1] = aux
+
+                aux = codigos_destinos[j]
+                codigos_destinos[j] = codigos_destinos[j+1]
+                codigos_destinos[j+1] = aux
+
+                aux = nombres_destinos[j]
+                nombres_destinos[j] = nombres_destinos[j+1]
+                nombres_destinos[j+1] = aux
+
+                aux = distancias_destinos[j]
+                distancias_destinos[j] = distancias_destinos[j+1]
+                distancias_destinos[j+1] = aux
 
 #PASAJES--> Insercion
 def ordenar_pasajes_cantidad():
     for i in range(1, len(cantidades_pasajes)):
+        # Guarda temporalmente el registro actual
         cantidad_aux = cantidades_pasajes[i]
         codigo_aux = codigos_pasajes[i]
         cliente_aux = codigos_cliente_pasajes[i]
         destino_aux = codigos_destino_pasajes[i]
         pago_aux = medios_pago_pasajes[i]
         j = i - 1
+        # Busca la posición correcta desplazando elementos mayores
         while j >= 0 and cantidades_pasajes[j] > cantidad_aux:
             cantidades_pasajes[j+1] = cantidades_pasajes[j]
             codigos_pasajes[j+1] = codigos_pasajes[j]
@@ -721,6 +784,7 @@ def ordenar_pasajes_cantidad():
             codigos_destino_pasajes[j+1] = codigos_destino_pasajes[j]
             medios_pago_pasajes[j+1] = medios_pago_pasajes[j]
             j -= 1
+        # Inserta el registro en la posición encontrada
         cantidades_pasajes[j+1] = cantidad_aux
         codigos_pasajes[j+1] = codigo_aux
         codigos_cliente_pasajes[j+1] = cliente_aux
@@ -729,13 +793,14 @@ def ordenar_pasajes_cantidad():
 
 def ordenar_pasajes_codigo():
     for i in range(1, len(codigos_pasajes)):
+        # Guarda temporalmente el registro actual
         codigo_aux = codigos_pasajes[i]
         cliente_aux = codigos_cliente_pasajes[i]
         destino_aux = codigos_destino_pasajes[i]
         cantidad_aux = cantidades_pasajes[i]
         medio_aux = medios_pago_pasajes[i]
         j = i - 1
-
+        # Busca la posición correcta desplazando elementos mayores
         while j >= 0 and codigos_pasajes[j] > codigo_aux:
             codigos_pasajes[j + 1] = codigos_pasajes[j]
             codigos_cliente_pasajes[j + 1] = codigos_cliente_pasajes[j]
@@ -750,6 +815,7 @@ def ordenar_pasajes_codigo():
         medios_pago_pasajes[j + 1] = medio_aux
 
 def ordenar_pasajes_medio_pago():
+    # Guarda temporalmente el registro actual
     for i in range(1, len(medios_pago_pasajes)):
         medio_aux = medios_pago_pasajes[i]
         codigo_aux = codigos_pasajes[i]
@@ -757,7 +823,7 @@ def ordenar_pasajes_medio_pago():
         destino_aux = codigos_destino_pasajes[i]
         cantidad_aux = cantidades_pasajes[i]
         j = i - 1
-
+        # Busca la posición correcta desplazando elementos mayores
         while j >= 0 and medios_pago_pasajes[j] > medio_aux:
             medios_pago_pasajes[j + 1] = medios_pago_pasajes[j]
             codigos_pasajes[j + 1] = codigos_pasajes[j]
@@ -772,7 +838,7 @@ def ordenar_pasajes_medio_pago():
         cantidades_pasajes[j + 1] = cantidad_aux
 
 # Búsquedas
-def buscar_cliente_menu():
+def buscar_cliente():
     print("------------------- Buscar Cliente ------------------")
     ordenar_clientes_codigo() #Para el funcionamiento del calculo binario
     codigo_a_buscar = pedir_entero_minimo("Ingrese el código del cliente a buscar: ", 1)
@@ -807,7 +873,7 @@ def calculo_binario_cliente(codigo_a_buscar):
             izquierda = medio + 1
     return -1
     
-def buscar_destino_menu():
+def buscar_destino():
     print("------------------- Buscar Destino ------------------")
     codigo_a_buscar = pedir_entero_minimo("Ingrese el código del destino a buscar: ", 1)
     posicion_destino = buscar_codigo(codigos_destinos, codigo_a_buscar)
@@ -824,7 +890,7 @@ def buscar_destino_menu():
         print("No se encontró un destino con ese código.")
 
 
-def buscar_pasaje_menu():
+def buscar_pasaje():
     print("------------------- Buscar Pasaje ------------------")
     codigo_a_buscar = pedir_entero_minimo("Ingrese el código del pasaje a buscar: ", 1)
     posicion_pasaje = buscar_codigo(codigos_pasajes, codigo_a_buscar) #busqueda secuencial
