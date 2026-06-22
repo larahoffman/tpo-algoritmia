@@ -11,7 +11,7 @@ edades_clientes = [25, 42, 31, 55, 19, 36, 28, 47, 22, 60]
 tipos_clientes = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2]   # 1 regular, 2 frecuente
 ## Destinos
 codigos_destinos = [201, 202, 203, 204, 205, 206, 207, 208, 209, 210]
-nombres_destinos = ["Cordoba", "Rosario", "Mendoza", "Bariloche", "Salta", "Ushuaia", "Mar del Plata", "Neuquen", "San Juan", "Tucuman"]
+nombres_destinos = ["Cordoba", "Rosario", "Mendoza", "Bariloche", "Salta  ", "Ushuaia", "Mar del Plata", "Neuquen", "San Juan", "Tucuman"]
 distancias_destinos = [700.0, 300.0, 1050.0, 1600.0, 1450.0, 3000.0, 415.0, 1150.0, 1100.0, 1250.0]
 precios_destinos = [12000, 8000, 15000, 20000, 18000, 30000, 9000, 16000, 15500, 17000]
 ## Pasajes
